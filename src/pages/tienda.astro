@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Producto from "../components/Producto.astro";
+
+const url = `${import.meta.env.PUBLIC_API_URL}/bebidas?populate=imagen`;
+const llamada = await fetch(url);
+const { data } = await llamada.json();
+---
+
+<Layout title="tienda" description="Venta de bebidas">
+  <main class="contenedor">
+    <h1 class="heading">Nuestra coleccion</h1>
+    <div class="grid">
+      {
+        data?.map((producto) => (
+          <Producto
+            nombre={producto.attributes.nombre}
+            descripcion={producto.attributes.descripcion}
+            precio={producto.attributes.precio}
+            url={producto.attributes.url}
+            imagen={producto.attributes.imagen.data.attributes.url}
+          />
+        ))
+      }
+    </div>
+  </main>
+</Layout>
+
+<style></style>
